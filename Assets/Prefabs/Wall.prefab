@@ -63,7 +63,7 @@ Transform:
   m_Children:
   - {fileID: 5881739638736395353}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7358537608822731127
 MonoBehaviour:
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playingGrid: {fileID: 0}
   Type: 0
-  Id: Coin
+  Id: Wall
   Sprite: {fileID: 0}
   IsInteractable: 0
   IsMovable: 0

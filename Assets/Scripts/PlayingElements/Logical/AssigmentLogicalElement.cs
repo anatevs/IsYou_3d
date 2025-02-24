@@ -60,13 +60,16 @@ namespace GameCore
             {
                 if (IsRuleDirection(direction))
                 {
-                    foreach (var oppositeElement in oppositeElementSet)
+                    if (oppositeElementSet != null)
                     {
-                        if (oppositeElement.Type == ElementType.Pointer)
+                        foreach (var oppositeElement in oppositeElementSet)
                         {
-                            neighbor.ApplyProperty(oppositeElement.GetPointer());
+                            if (oppositeElement.Type == ElementType.Pointer)
+                            {
+                                neighbor.ApplyProperty(oppositeElement.GetPointer());
 
-                            _isActiveRules[direction] = true;
+                                _isActiveRules[direction] = true;
+                            }
                         }
                     }
                 }

@@ -105,8 +105,6 @@ namespace GameCore
 
             CheckWinInSet();
             UpdateNeighbors();
-
-            //UpdateNeighbors(changeRuleExclude);
         }
 
         private Vector2Int GetNewIndex(Vector3 newPosition)

@@ -7,9 +7,12 @@ namespace GameCore
     {
         public event Action OnWinned;
 
+        [SerializeField]
+        private GameObject _winWindow;
+
         public void MakeOnWin()
         {
-            Debug.Log("you are win!");
+            _winWindow.SetActive(true);
 
             OnWinned?.Invoke();
         }
