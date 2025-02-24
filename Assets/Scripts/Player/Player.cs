@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace GameCore
 {
@@ -34,29 +35,28 @@ namespace GameCore
 
         private void MakeMovePosition(Vector3 clickedPos)
         {
-            //if (IsPlayerNull())
-            //{
-            //    return;
-            //}
+            if (IsPlayerNull())
+            {
+                return;
+            }
 
-            //var clickedTileIndex = _gridCalculations.GetTileIndex(clickedPos);
+            var clickedTileIndex = _gridCalculations.GetTileIndex(clickedPos);
 
-            //var playerTileIndex = _gridCalculations.GetTileIndex(_currentPlayer.transform.position);
+            var playerTileIndex = _gridCalculations.GetTileIndex(_currentPlayer.transform.position);
 
-            //var directionInt = clickedTileIndex - playerTileIndex;
+            var directionInt = clickedTileIndex - playerTileIndex;
 
-            //if (directionInt.x != 0 && directionInt.y != 0)
-            //{
-            //    return;
-            //}
+            if (directionInt.x != 0 && directionInt.y != 0)
+            {
+                return;
+            }
 
-            //var sqrM = directionInt.sqrMagnitude;
+            var signX = Math.Sign(directionInt.x);
+            var signY = Math.Sign(directionInt.y);
 
-            //var direction = new Vector2(
-            //    directionInt.x * Mathf.Abs(directionInt.x) / sqrM,
-            //    directionInt.y * Mathf.Abs(directionInt.y) / sqrM);
+            var direction = new Vector3(signX, 0, signY);
 
-            //MakeMove(direction);
+            MakeMove(direction);
         }
 
         private void MakeMove(Vector3 direction)

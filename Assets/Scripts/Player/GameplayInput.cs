@@ -13,6 +13,8 @@ namespace GameCore
 
         private Camera _camera;
 
+        private Plane _groundPlane;
+
         //a field of input and isPlaying listener to switch input action maps
 
         private PlayerInput _playerInput;
@@ -21,6 +23,7 @@ namespace GameCore
         {
             _playerInput = GetComponent<PlayerInput>();
             _camera = Camera.main;
+            _groundPlane = new Plane(Vector3.up, 0);
         }
 
         private void OnEnable()
@@ -48,9 +51,14 @@ namespace GameCore
             {
                 var clickPositionScreen = context.ReadValue<Vector2>();
 
-                var clickPos = _camera.ScreenToWorldPoint(clickPositionScreen);
+                var ray = _camera.ScreenPointToRay(clickPositionScreen);
 
-                OnMovePosition?.Invoke(clickPos);
+                if (_groundPlane.Raycast(ray, out var distance))
+                {
+                    var clickedPos = ray.GetPoint(distance);
+
+                    OnMovePosition?.Invoke(clickedPos);
+                }
             }
         }
 
