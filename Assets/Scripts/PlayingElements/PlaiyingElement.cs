@@ -2,26 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using DG.Tweening;
 
 namespace GameCore
 {
     public class PlaiyingElement : MonoBehaviour
     {
+        public ElementType Type
+        {
+            get => _type; set => _type = value;
+        }
+
+        public string Id { get => _id; }
+
+        public bool IsInteractable
+        {
+            get => _isInteractable; set => _isInteractable = value;
+        }
+
+        public bool IsMovable
+        {
+            get => _isMovable; set => _isMovable = value;
+        }
+
         [SerializeField]
         private PlayingGrid _playingGrid;
 
+        [SerializeField]
+        private ElementType _type;
 
-        public ElementType Type;
+        [SerializeField]
+        private string _id;
 
-        public string Id;
+        [SerializeField]
+        private GameObject _viewPrefab;
 
-        public Sprite Sprite;
+        [SerializeField]
+        private bool _isInteractable;
 
-        public bool IsInteractable;
+        [SerializeField]
+        private bool _isMovable;
 
-        public bool IsMovable;
+        private float _moveDuration = 0.15f;
 
         private Vector2Int _currentIndex;
+
+        private bool _isAtMoveTween;
 
         protected Dictionary<(int x, int y), HashSet<PlaiyingElement>> _udlrNeighbors = new()
         {
@@ -47,10 +73,16 @@ namespace GameCore
 
             else
             {
+                var moveSequence = DOTween.Sequence().Pause();
+
                 foreach (var movable in movableElements)
                 {
-                    movable.Element.Move(movable.Index, movable.Position);
+                    movable.Element.MoveIndex(movable.Index);
+
+                    moveSequence.Join(movable.Element.MoveView(movable.Position, _moveDuration));
                 }
+
+                moveSequence.Play();
             }
 
 
@@ -94,17 +126,20 @@ namespace GameCore
             return true;
         }
 
-        private void Move(Vector2Int newIndex, Vector3 newPos)
+        private void MoveIndex(Vector2Int newIndex)
         {
             _playingGrid.RemoveElement(_currentIndex, this);
             _playingGrid.AddElement(newIndex, this);
 
             _currentIndex = newIndex;
 
-            transform.position = newPos;
-
             CheckWinInSet();
             UpdateNeighbors();
+        }
+
+        private Tween MoveView(Vector3 newPos, float duration)
+        {
+            return transform.DOMove(newPos, duration).Pause();
         }
 
         private Vector2Int GetNewIndex(Vector3 newPosition)

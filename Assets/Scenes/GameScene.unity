@@ -3518,11 +3518,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playingGrid: {fileID: 351197307}
-  Type: 0
-  Id: Cube
-  Sprite: {fileID: 0}
-  IsInteractable: 1
-  IsMovable: 1
+  _type: 0
+  _id: Cube
+  _viewPrefab: {fileID: 0}
+  _isInteractable: 1
+  _isMovable: 1
 --- !u!4 &2146608724
 Transform:
   m_ObjectHideFlags: 0
