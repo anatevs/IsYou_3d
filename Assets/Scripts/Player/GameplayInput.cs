@@ -13,7 +13,11 @@ namespace GameCore
 
         public Vector3 MoveDirection => _moveDirection;
 
+        public Vector3 MovePosition => _movePosition;
+
         public bool IsMoving => _isMoving;
+
+        public bool IsMovingPos => _isMovingPos;
 
         private Camera _camera;
 
@@ -25,7 +29,11 @@ namespace GameCore
 
         private Vector3 _moveDirection;
 
+        private Vector3 _movePosition;
+
         private bool _isMoving;
+
+        private bool _isMovingPos;
 
         private static Vector3 _zeroVector = Vector3.zero;
 
@@ -39,11 +47,11 @@ namespace GameCore
 
         private void OnEnable()
         {
-            _playerInput.onActionTriggered += OnMoveUpValue;
-            _playerInput.onActionTriggered += OnMoveDownValue;
-            _playerInput.onActionTriggered += OnMoveLeftValue;
-            _playerInput.onActionTriggered += OnMoveRightValue;
-
+            _playerInput.onActionTriggered += OnMoveUpContinued;
+            _playerInput.onActionTriggered += OnMoveDownContinued;
+            _playerInput.onActionTriggered += OnMoveLeftContinued;
+            _playerInput.onActionTriggered += OnMoveRightContinued;
+            _playerInput.onActionTriggered += OnClickPositionContinued;
 
             _playerInput.onActionTriggered += OnClickPosition;
             _playerInput.onActionTriggered += OnMoveUp;
@@ -54,10 +62,11 @@ namespace GameCore
 
         private void OnDisable()
         {
-            _playerInput.onActionTriggered -= OnMoveUpValue;
-            _playerInput.onActionTriggered -= OnMoveDownValue;
-            _playerInput.onActionTriggered -= OnMoveLeftValue;
-            _playerInput.onActionTriggered -= OnMoveRightValue;
+            _playerInput.onActionTriggered -= OnMoveUpContinued;
+            _playerInput.onActionTriggered -= OnMoveDownContinued;
+            _playerInput.onActionTriggered -= OnMoveLeftContinued;
+            _playerInput.onActionTriggered -= OnMoveRightContinued;
+            _playerInput.onActionTriggered -= OnClickPositionContinued;
 
             _playerInput.onActionTriggered -= OnClickPosition;
             _playerInput.onActionTriggered -= OnMoveUp;
@@ -65,12 +74,6 @@ namespace GameCore
             _playerInput.onActionTriggered -= OnMoveLeft;
             _playerInput.onActionTriggered -= OnMoveRight;
         }
-
-        private void Update()
-        {
-            //OnMoveUpValue();
-        }
-
 
         private void OnClickPosition(InputAction.CallbackContext context)
         {
@@ -121,7 +124,39 @@ namespace GameCore
             }
         }
 
-        private void OnMoveUpValue(InputAction.CallbackContext context)
+        private void OnClickPositionContinued(InputAction.CallbackContext context)
+        {
+            if (context.action.name == "PositionMove")
+            {
+                if (context.started)
+                {
+                    Debug.Log("pos move started");
+
+                    var clickPositionScreen = context.ReadValue<Vector2>();
+
+                    var ray = _camera.ScreenPointToRay(clickPositionScreen);
+
+                    if (_groundPlane.Raycast(ray, out var distance))
+                    {
+                        _isMovingPos = true;
+                        _movePosition = ray.GetPoint(distance);
+
+                        Debug.Log($"is ray to {_movePosition}");
+                    }
+                }
+
+                else if (context.canceled)
+                {
+                    Debug.Log("pos move ended");
+
+                    _isMovingPos = false;
+                    _movePosition = _zeroVector;
+                }
+            }
+        }
+
+
+        private void OnMoveUpContinued(InputAction.CallbackContext context)
         {
             if (context.action.name == "MoveUpValue")
             {
@@ -138,7 +173,7 @@ namespace GameCore
             }
         }
 
-        private void OnMoveDownValue(InputAction.CallbackContext context)
+        private void OnMoveDownContinued(InputAction.CallbackContext context)
         {
             if (context.action.name == "MoveDownValue")
             {
@@ -155,7 +190,7 @@ namespace GameCore
             }
         }
 
-        private void OnMoveLeftValue(InputAction.CallbackContext context)
+        private void OnMoveLeftContinued(InputAction.CallbackContext context)
         {
             if (context.action.name == "MoveLeftValue")
             {
@@ -172,7 +207,7 @@ namespace GameCore
             }
         }
 
-        private void OnMoveRightValue(InputAction.CallbackContext context)
+        private void OnMoveRightContinued(InputAction.CallbackContext context)
         {
             if (context.action.name == "MoveRightValue")
             {

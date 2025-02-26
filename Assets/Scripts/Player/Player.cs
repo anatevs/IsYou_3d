@@ -34,11 +34,6 @@ namespace GameCore
             _currentPlayer = player;
         }
 
-        private void Start()
-        {
-            //_currentPlayer.MakeMoveProcess(_input.IsMoving, _input.MoveDirection);
-        }
-
         private void Update()
         {
             if (IsPlayerNull())
@@ -46,16 +41,12 @@ namespace GameCore
                 return;
             }
 
-            _currentPlayer.MakeMoveProcess(_input.IsMoving, _input.MoveDirection);
+            MovePlayer(_input.MoveDirection);
+            MovePlayerPosition(_input.MovePosition);
         }
 
-        private void MakeMovePosition(Vector3 clickedPos)
+        private void MovePlayerPosition(Vector3 clickedPos)
         {
-            if (IsPlayerNull())
-            {
-                return;
-            }
-
             var clickedTileIndex = _gridCalculations.GetTileIndex(clickedPos);
 
             var playerTileIndex = _gridCalculations.GetTileIndex(_currentPlayer.transform.position);
@@ -72,17 +63,16 @@ namespace GameCore
 
             var direction = new Vector3(signX, 0, signY);
 
-            MakeMove(direction);
+            if (_input.IsMovingPos)
+            {
+                Debug.Log(direction);
+            }
+            _currentPlayer.MakeMoveProcess(_input.IsMovingPos, direction);
         }
 
-        private void MakeMove(Vector3 direction)
+        private void MovePlayer(Vector3 direction)
         {
-            if (IsPlayerNull())
-            {
-                return;
-            }
-
-            _currentPlayer.MakeMove(direction);
+            _currentPlayer.MakeMoveProcess(_input.IsMoving, direction);
         }
 
         private bool IsPlayerNull()

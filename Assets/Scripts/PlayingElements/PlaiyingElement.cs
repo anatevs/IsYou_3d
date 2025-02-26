@@ -86,28 +86,23 @@ namespace GameCore
             }
         }
 
-        public void MakeMoveProcess(bool isMove, Vector3 direction)//async: 1st make move with anim, 2nd: check if win
+        public void MakeMoveProcess(bool isMove, Vector3 direction)
         {
             if (isMove)
             {
                 if (!_isAtMoveTween)
                 {
-                    Debug.Log($"to next cell");
-
                     _isAtMoveTween = true;
 
                     List<MovableInfo> movableElements = new();
 
                     if (!CanMove(direction, ref movableElements))
                     {
-                        Debug.Log("cannot move");
                         return;
                     }
 
                     else
                     {
-                        Debug.Log("can move");
-
                         var moveSequence = DOTween
                             .Sequence()
                             .Pause()
