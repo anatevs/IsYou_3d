@@ -193,9 +193,6 @@ namespace GameCore
 
         private Vector3 GetNewPosition(Vector3 direction)
         {
-            Debug.Log(direction);
-            Debug.Log(transform.position);
-            Debug.Log(direction + transform.position);
             return transform.position + direction;
         }
 

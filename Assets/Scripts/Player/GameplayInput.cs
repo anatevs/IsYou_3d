@@ -40,6 +40,10 @@ namespace GameCore
         private void OnEnable()
         {
             _playerInput.onActionTriggered += OnMoveUpValue;
+            _playerInput.onActionTriggered += OnMoveDownValue;
+            _playerInput.onActionTriggered += OnMoveLeftValue;
+            _playerInput.onActionTriggered += OnMoveRightValue;
+
 
             _playerInput.onActionTriggered += OnClickPosition;
             _playerInput.onActionTriggered += OnMoveUp;
@@ -51,6 +55,9 @@ namespace GameCore
         private void OnDisable()
         {
             _playerInput.onActionTriggered -= OnMoveUpValue;
+            _playerInput.onActionTriggered -= OnMoveDownValue;
+            _playerInput.onActionTriggered -= OnMoveLeftValue;
+            _playerInput.onActionTriggered -= OnMoveRightValue;
 
             _playerInput.onActionTriggered -= OnClickPosition;
             _playerInput.onActionTriggered -= OnMoveUp;
@@ -120,15 +127,62 @@ namespace GameCore
             {
                 if (context.started)
                 {
-                    Debug.Log("start moving");
-
                     _isMoving = true;
                     _moveDirection = Vector3.forward;
                 }
                 else if (context.canceled)
                 {
-                    Debug.Log("end moving");
+                    _isMoving = false;
+                    _moveDirection = _zeroVector;
+                }
+            }
+        }
 
+        private void OnMoveDownValue(InputAction.CallbackContext context)
+        {
+            if (context.action.name == "MoveDownValue")
+            {
+                if (context.started)
+                {
+                    _isMoving = true;
+                    _moveDirection = Vector3.back;
+                }
+                else if (context.canceled)
+                {
+                    _isMoving = false;
+                    _moveDirection = _zeroVector;
+                }
+            }
+        }
+
+        private void OnMoveLeftValue(InputAction.CallbackContext context)
+        {
+            if (context.action.name == "MoveLeftValue")
+            {
+                if (context.started)
+                {
+                    _isMoving = true;
+                    _moveDirection = Vector3.left;
+                }
+                else if (context.canceled)
+                {
+                    _isMoving = false;
+                    _moveDirection = _zeroVector;
+                }
+            }
+        }
+
+        private void OnMoveRightValue(InputAction.CallbackContext context)
+        {
+            if (context.action.name == "MoveRightValue")
+            {
+                if (context.started)
+                {
+                    _isMoving = true;
+                    _moveDirection = Vector3.right;
+                }
+                else if (context.canceled)
+                {
                     _isMoving = false;
                     _moveDirection = _zeroVector;
                 }
