@@ -11,6 +11,10 @@ namespace GameCore
 
         public event Action<Vector3> OnMovePosition;
 
+        public Vector3 MoveDirection => _moveDirection;
+
+        public bool IsMoving => _isMoving;
+
         private Camera _camera;
 
         private Plane _groundPlane;
@@ -19,15 +23,24 @@ namespace GameCore
 
         private PlayerInput _playerInput;
 
+        private Vector3 _moveDirection;
+
+        private bool _isMoving;
+
+        private static Vector3 _zeroVector = Vector3.zero;
+
         private void Awake()
         {
             _playerInput = GetComponent<PlayerInput>();
             _camera = Camera.main;
             _groundPlane = new Plane(Vector3.up, 0);
+            _moveDirection = _zeroVector;
         }
 
         private void OnEnable()
         {
+            _playerInput.onActionTriggered += OnMoveUpValue;
+
             _playerInput.onActionTriggered += OnClickPosition;
             _playerInput.onActionTriggered += OnMoveUp;
             _playerInput.onActionTriggered += OnMoveDown;
@@ -37,11 +50,18 @@ namespace GameCore
 
         private void OnDisable()
         {
+            _playerInput.onActionTriggered -= OnMoveUpValue;
+
             _playerInput.onActionTriggered -= OnClickPosition;
             _playerInput.onActionTriggered -= OnMoveUp;
             _playerInput.onActionTriggered -= OnMoveDown;
             _playerInput.onActionTriggered -= OnMoveLeft;
             _playerInput.onActionTriggered -= OnMoveRight;
+        }
+
+        private void Update()
+        {
+            //OnMoveUpValue();
         }
 
 
@@ -91,6 +111,27 @@ namespace GameCore
             if (context.action.name == "MoveRight" && context.performed)
             {
                 OnMoveDirection?.Invoke(Vector3.right);
+            }
+        }
+
+        private void OnMoveUpValue(InputAction.CallbackContext context)
+        {
+            if (context.action.name == "MoveUpValue")
+            {
+                if (context.started)
+                {
+                    Debug.Log("start moving");
+
+                    _isMoving = true;
+                    _moveDirection = Vector3.forward;
+                }
+                else if (context.canceled)
+                {
+                    Debug.Log("end moving");
+
+                    _isMoving = false;
+                    _moveDirection = _zeroVector;
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameCore
@@ -16,21 +17,36 @@ namespace GameCore
         [SerializeField]
         private GridCalculations _gridCalculations;
 
-        private void OnEnable()
-        {
-            _input.OnMoveDirection += MakeMove;
-            _input.OnMovePosition += MakeMovePosition;
-        }
+        //private void OnEnable()
+        //{
+        //    _input.OnMoveDirection += MakeMove;
+        //    _input.OnMovePosition += MakeMovePosition;
+        //}
 
-        private void OnDisable()
-        {
-            _input.OnMoveDirection -= MakeMove;
-            _input.OnMovePosition -= MakeMovePosition;
-        }
+        //private void OnDisable()
+        //{
+        //    _input.OnMoveDirection -= MakeMove;
+        //    _input.OnMovePosition -= MakeMovePosition;
+        //}
 
         public void SetPlayer(PlaiyingElement player)
         {
             _currentPlayer = player;
+        }
+
+        private void Start()
+        {
+            //_currentPlayer.MakeMoveProcess(_input.IsMoving, _input.MoveDirection);
+        }
+
+        private void Update()
+        {
+            if (IsPlayerNull())
+            {
+                return;
+            }
+
+            _currentPlayer.MakeMoveProcess(_input.IsMoving, _input.MoveDirection);
         }
 
         private void MakeMovePosition(Vector3 clickedPos)

@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "MoveUpValue",
+                    "type": "Value",
+                    "id": "6ecc5285-0d0b-4be8-a858-89f850d77e70",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -260,6 +269,17 @@
                     "action": "PositionMove",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "4fa422ee-5531-48e2-8021-2ede057b4967",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "MoveUpValue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

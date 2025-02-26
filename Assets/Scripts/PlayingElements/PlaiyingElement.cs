@@ -43,7 +43,7 @@ namespace GameCore
         [SerializeField]
         private bool _isMovable;
 
-        private float _moveDuration = 0.15f;
+        private float _moveDuration = 1f;
 
         private Vector2Int _currentIndex;
 
@@ -84,8 +84,52 @@ namespace GameCore
 
                 moveSequence.Play();
             }
+        }
 
+        public void MakeMoveProcess(bool isMove, Vector3 direction)//async: 1st make move with anim, 2nd: check if win
+        {
+            if (isMove)
+            {
+                if (!_isAtMoveTween)
+                {
+                    Debug.Log($"to next cell");
 
+                    _isAtMoveTween = true;
+
+                    List<MovableInfo> movableElements = new();
+
+                    if (!CanMove(direction, ref movableElements))
+                    {
+                        Debug.Log("cannot move");
+                        return;
+                    }
+
+                    else
+                    {
+                        Debug.Log("can move");
+
+                        var moveSequence = DOTween
+                            .Sequence()
+                            .Pause()
+                            .OnComplete(SetEndMoveTween);
+
+                        foreach (var movable in movableElements)
+                        {
+                            movable.Element.MoveIndex(movable.Index);
+
+                            moveSequence.Join(movable.Element.MoveView(movable.Position, _moveDuration));
+                        }
+
+                        moveSequence.Play();
+                    }
+                }
+            }
+        }
+
+        private void SetEndMoveTween()
+        {
+            _isAtMoveTween = false;
+            Debug.Log("end tween");
         }
 
         private bool CanMove(Vector3 direction, ref List<MovableInfo> obstacleElements)
@@ -149,6 +193,9 @@ namespace GameCore
 
         private Vector3 GetNewPosition(Vector3 direction)
         {
+            Debug.Log(direction);
+            Debug.Log(transform.position);
+            Debug.Log(direction + transform.position);
             return transform.position + direction;
         }
 
