@@ -8,6 +8,8 @@ namespace GameCore
 {
     public class PlaiyingElement : MonoBehaviour
     {
+        public event Action<PlaiyingElement> OnCheckPlayerAndTarget;
+
         public ElementType Type
         {
             get => _type; set => _type = value;
@@ -57,33 +59,11 @@ namespace GameCore
             { (1, 0), new() }
         };
 
+        protected List<(int x, int y)> _udlrDirections;
+
         public void SetCurrentIndex(Vector2Int index)
         {
             _currentIndex = index;
-        }
-
-        public void MakeMove(Vector3 direction)//async: 1st make move with anim, 2nd: check if win
-        {
-            List<MovableInfo> movableElements = new();
-
-            if (!CanMove(direction, ref movableElements))
-            {
-                return;
-            }
-
-            else
-            {
-                var moveSequence = DOTween.Sequence().Pause();
-
-                foreach (var movable in movableElements)
-                {
-                    movable.Element.MoveIndex(movable.Index);
-
-                    moveSequence.Join(movable.Element.MoveView(movable.Position, _moveDuration));
-                }
-
-                moveSequence.Play();
-            }
         }
 
         public void MakeMoveProcess(bool isMove, Vector3 direction)
@@ -92,8 +72,6 @@ namespace GameCore
             {
                 if (!_isAtMoveTween)
                 {
-                    _isAtMoveTween = true;
-
                     List<MovableInfo> movableElements = new();
 
                     if (!CanMove(direction, ref movableElements))
@@ -103,10 +81,11 @@ namespace GameCore
 
                     else
                     {
+                        _isAtMoveTween = true;
+
                         var moveSequence = DOTween
                             .Sequence()
-                            .Pause()
-                            .OnComplete(SetEndMoveTween);
+                            .Pause();
 
                         foreach (var movable in movableElements)
                         {
@@ -121,8 +100,26 @@ namespace GameCore
             }
         }
 
-        private void SetEndMoveTween()
+        private void MoveIndex(Vector2Int newIndex)
         {
+            _playingGrid.RemoveElement(_currentIndex, this);
+            _playingGrid.AddElement(newIndex, this);
+
+            _currentIndex = newIndex;
+        }
+
+        private Tween MoveView(Vector3 newPos, float duration)
+        {
+            return transform.DOMove(newPos, duration)
+                .Pause()
+                .OnComplete(MakeOnEndMoveTween);
+        }
+
+        private void MakeOnEndMoveTween()
+        {
+            CheckWinInSet();
+            UpdateNeighbors();
+
             _isAtMoveTween = false;
         }
 
@@ -164,22 +161,6 @@ namespace GameCore
             return true;
         }
 
-        private void MoveIndex(Vector2Int newIndex)
-        {
-            _playingGrid.RemoveElement(_currentIndex, this);
-            _playingGrid.AddElement(newIndex, this);
-
-            _currentIndex = newIndex;
-
-            CheckWinInSet();
-            UpdateNeighbors();
-        }
-
-        private Tween MoveView(Vector3 newPos, float duration)
-        {
-            return transform.DOMove(newPos, duration).Pause();
-        }
-
         private Vector2Int GetNewIndex(Vector3 newPosition)
         {
             return _playingGrid.FromPositionToIndex(newPosition);
@@ -192,7 +173,7 @@ namespace GameCore
 
         protected virtual void UpdateNeighbors()
         {
-            foreach (var direction in _udlrNeighbors.Keys.ToList())
+            foreach (var direction in _udlrDirections)
             {
                 var newNeighborSet = GetNeighbor(direction);
 
@@ -262,7 +243,9 @@ namespace GameCore
 
         public void InitNeighbors()
         {
-            foreach (var direction in _udlrNeighbors.Keys.ToList())
+            _udlrDirections = _udlrNeighbors.Keys.ToList();
+
+            foreach (var direction in _udlrDirections)
             {
                 if (TryGetNeighbor(direction, out var neighborElement))
                 {
@@ -270,8 +253,6 @@ namespace GameCore
                 }
             }
         }
-
-        public event Action<PlaiyingElement> OnCheckPlayerAndTarget;
 
         public void MakeOnCheckWin(PlaiyingElement element)
         {

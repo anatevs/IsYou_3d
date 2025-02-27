@@ -79,7 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playingGrid: {fileID: 0}
   _type: 0
-  _id: 
+  _id: Wall
   _viewPrefab: {fileID: 0}
   _isInteractable: 0
   _isMovable: 0

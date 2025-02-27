@@ -335,7 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playingGrid: {fileID: 0}
   _type: 1
-  _id: 
+  _id: Is
   _viewPrefab: {fileID: 0}
   _isInteractable: 1
   _isMovable: 1

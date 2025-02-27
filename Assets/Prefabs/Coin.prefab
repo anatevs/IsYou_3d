@@ -79,7 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playingGrid: {fileID: 0}
   _type: 0
-  _id: 
+  _id: Coin
   _viewPrefab: {fileID: 0}
   _isInteractable: 0
   _isMovable: 0
@@ -97,7 +97,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f7e63dbe54babf94b9268fbb55115f78, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f7e63dbe54babf94b9268fbb55115f78, type: 3}
       propertyPath: m_LocalScale.y
