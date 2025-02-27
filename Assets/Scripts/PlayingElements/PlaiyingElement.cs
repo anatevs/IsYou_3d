@@ -45,7 +45,8 @@ namespace GameCore
         [SerializeField]
         private bool _isMovable;
 
-        private float _moveDuration = 0.5f;
+        [SerializeField]
+        private float _moveDuration = 0.35f;
 
         private Vector2Int _currentIndex;
 

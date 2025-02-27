@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameCore
 {
-    public class WinManager : MonoBehaviour
+    public sealed class WinManager : MonoBehaviour
     {
         public event Action OnWinned;
 
