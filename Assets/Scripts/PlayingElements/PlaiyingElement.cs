@@ -43,7 +43,7 @@ namespace GameCore
         [SerializeField]
         private bool _isMovable;
 
-        private float _moveDuration = 1f;
+        private float _moveDuration = 0.5f;
 
         private Vector2Int _currentIndex;
 
@@ -124,7 +124,6 @@ namespace GameCore
         private void SetEndMoveTween()
         {
             _isAtMoveTween = false;
-            Debug.Log("end tween");
         }
 
         private bool CanMove(Vector3 direction, ref List<MovableInfo> obstacleElements)

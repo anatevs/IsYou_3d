@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GameCore
 {
-    public class GridCalculations : MonoBehaviour,
+    public class TileGridCalculations : MonoBehaviour,
         IGridCalculations
     {
         public (int x, int y) MapSize => _mapSize;
@@ -30,12 +30,7 @@ namespace GameCore
         {
             var res = coordinate / _cellSize;
 
-            if (res < 0)
-            {
-                return (int)(res - 1);
-            }
-
-            return (int)res;
+            return Mathf.FloorToInt(res);
         }
     }
 }

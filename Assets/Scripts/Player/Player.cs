@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameCore
@@ -9,25 +8,13 @@ namespace GameCore
         public PlaiyingElement CurrentPlayer => _currentPlayer;
 
         [SerializeField]
-        private GameplayInput _input;
+        private InputHandler _input;
 
         [SerializeField]
         private PlaiyingElement _currentPlayer;
 
         [SerializeField]
-        private GridCalculations _gridCalculations;
-
-        //private void OnEnable()
-        //{
-        //    _input.OnMoveDirection += MakeMove;
-        //    _input.OnMovePosition += MakeMovePosition;
-        //}
-
-        //private void OnDisable()
-        //{
-        //    _input.OnMoveDirection -= MakeMove;
-        //    _input.OnMovePosition -= MakeMovePosition;
-        //}
+        private TileGridCalculations _gridCalculations;
 
         public void SetPlayer(PlaiyingElement player)
         {
@@ -53,7 +40,7 @@ namespace GameCore
 
             var directionInt = clickedTileIndex - playerTileIndex;
 
-            if (directionInt.x != 0 && directionInt.y != 0)
+            if (directionInt.x != 0 && directionInt.y != 0 || directionInt == Vector2Int.zero)
             {
                 return;
             }
@@ -63,10 +50,6 @@ namespace GameCore
 
             var direction = new Vector3(signX, 0, signY);
 
-            if (_input.IsMovingPos)
-            {
-                Debug.Log(direction);
-            }
             _currentPlayer.MakeMoveProcess(_input.IsMovingPos, direction);
         }
 

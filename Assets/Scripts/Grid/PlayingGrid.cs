@@ -10,7 +10,7 @@ namespace GameCore
         public int MaxY => _gameElements.GetLength(1);
 
         [SerializeField]
-        private GridCalculations _gridCalculations;
+        private TileGridCalculations _gridCalculations;
 
         [SerializeField]
         private Transform _parentTransform;

@@ -78,11 +78,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playingGrid: {fileID: 0}
-  Type: 3
-  Id: 
-  Sprite: {fileID: 0}
-  IsInteractable: 1
-  IsMovable: 1
+  _type: 3
+  _id: 
+  _viewPrefab: {fileID: 0}
+  _isInteractable: 1
+  _isMovable: 1
   _pointingElement: []
 --- !u!1 &3381406392923025261
 GameObject:
@@ -142,7 +142,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4021472066767404079}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0.5, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
