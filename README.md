@@ -4,7 +4,7 @@ The game is not complete, the goal is just to make blocks move and interact with
 Project uses:
 - new unity input system;
 - DOTween for blocks views moving
-- couple 3D models from: https://kenney.nl/assets/prototype-kit
+- 3D models from: https://kenney.nl/assets/prototype-kit
 
 Working of stop, push, getting win object blocks
 
